@@ -1,0 +1,2 @@
+# Glossator
+Automatic RecyclerView Adapter
