@@ -8,19 +8,19 @@ import com.kritarie.glossator.GlossaryViewHolder;
 /**
  * Created by Sean on 12/11/2015.
  */
-public abstract class GlossaryBinder<T, H extends T> {
+public abstract class GlossaryBinder<T> {
 
     private @LayoutRes int mViewType;
-    private Class<H> mClass;
+    private Class<T> mClass;
 
-    public GlossaryBinder(@LayoutRes int viewType, Class<H> modelClass) {
+    public GlossaryBinder(@LayoutRes int viewType, Class<T> modelClass) {
         mViewType = viewType;
         mClass = modelClass;
     }
 
-    public abstract GlossaryViewHolder<H> create(ViewGroup parent);
+    public abstract GlossaryViewHolder<T> create(ViewGroup parent);
 
-    public final boolean handlesViewType(T item) {
+    public final boolean handlesViewType(Object item) {
         return mClass.isInstance(item);
     }
 

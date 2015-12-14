@@ -66,7 +66,7 @@ public class Glossator<T> {
      * @return this {@link Glossator} for chaining
      */
     public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass, Class<? extends GlossaryViewHolder<H>> holderClass) {
-        mGlossary.addBinder(new ReflectiveBinder<T, H>(viewType, modelClass, holderClass));
+        mGlossary.addBinder(new ReflectiveBinder<>(viewType, modelClass, holderClass));
         return this;
     }
 
@@ -80,7 +80,7 @@ public class Glossator<T> {
      * @param factory which creates a {@link GlossaryViewHolder} for the given viewType
      * @return this {@link Glossator} for chaining
      */
-    public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass, HolderFactory<T, H> factory) {
+    public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass, HolderFactory<H> factory) {
         mGlossary.addBinder(new FactoryBinder<>(viewType, modelClass, factory));
         return this;
     }
@@ -95,7 +95,7 @@ public class Glossator<T> {
      * @return this {@link Glossator} for chaining
      */
     public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass) {
-        mGlossary.addBinder(new EmptyBinder<T, H>(viewType, modelClass));
+        mGlossary.addBinder(new EmptyBinder<>(viewType, modelClass));
         return this;
     }
 

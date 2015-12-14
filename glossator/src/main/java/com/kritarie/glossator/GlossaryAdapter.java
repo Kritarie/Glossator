@@ -14,6 +14,7 @@ import com.kritarie.glossator.listener.OnViewDetachedFromWindowListener;
 import com.kritarie.glossator.listener.OnViewRecycledListener;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class GlossaryAdapter<T> extends RecyclerView.Adapter<GlossaryViewHolder>
 
     public final void append(List<T> items) {
         int count = getItemCount();
+        mListItems.addAll(items);
         mListItems.addAll(items);
         notifyItemRangeInserted(count, mListItems.size() - 1);
     }

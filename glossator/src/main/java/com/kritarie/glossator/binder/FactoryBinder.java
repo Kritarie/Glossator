@@ -10,17 +10,17 @@ import com.kritarie.glossator.GlossaryViewHolder;
 /**
  * Created by Sean on 12/11/2015.
  */
-public class FactoryBinder<T, H extends T> extends GlossaryBinder<T, H> {
+public class FactoryBinder<T> extends GlossaryBinder<T> {
 
-    private HolderFactory<T, H> mFactory;
+    private HolderFactory<T> mFactory;
 
-    public FactoryBinder(@LayoutRes int viewType, Class<H> modelClass, HolderFactory<T, H> factory) {
+    public FactoryBinder(@LayoutRes int viewType, Class<T> modelClass, HolderFactory<T> factory) {
         super(viewType, modelClass);
         mFactory = factory;
     }
 
     @Override
-    public GlossaryViewHolder<H> create(ViewGroup parent) {
+    public GlossaryViewHolder<T> create(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(getViewType(), parent, false);
         return mFactory.create(itemView);

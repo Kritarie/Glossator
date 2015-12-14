@@ -12,11 +12,11 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by Sean on 12/9/2015.
  */
-public class ReflectiveBinder<T, H extends T> extends GlossaryBinder<T, H> {
+public class ReflectiveBinder<T> extends GlossaryBinder<T> {
 
-    private Constructor<? extends GlossaryViewHolder<H>> mConstructor;
+    private Constructor<? extends GlossaryViewHolder<T>> mConstructor;
 
-    public ReflectiveBinder(int viewType, Class<H> modelClass, Class<? extends GlossaryViewHolder<H>> holderClass) {
+    public ReflectiveBinder(int viewType, Class<T> modelClass, Class<? extends GlossaryViewHolder<T>> holderClass) {
         super(viewType, modelClass);
         try {
             mConstructor = holderClass.getConstructor(View.class);
@@ -26,10 +26,10 @@ public class ReflectiveBinder<T, H extends T> extends GlossaryBinder<T, H> {
     }
 
     @Override
-    public GlossaryViewHolder<H> create(ViewGroup parent) {
+    public GlossaryViewHolder<T> create(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(getViewType(), parent, false);
-        GlossaryViewHolder<H> holder;
+        GlossaryViewHolder<T> holder;
         try {
             holder = mConstructor.newInstance(itemView);
         } catch (InstantiationException e) {

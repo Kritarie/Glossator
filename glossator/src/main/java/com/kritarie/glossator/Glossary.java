@@ -14,15 +14,15 @@ import java.util.List;
 public class Glossary<T> {
 
     /* Binder Map */
-    private SparseArray<GlossaryBinder<T, ?>> mBinders = new SparseArray<>();
+    private SparseArray<GlossaryBinder<? extends T>> mBinders = new SparseArray<>();
 
-    public void addBinder(GlossaryBinder<T, ?> binder) {
+    public <H extends T> void addBinder(GlossaryBinder<H> binder) {
         @LayoutRes int viewType = binder.getViewType();
         if (mBinders.get(viewType) != null) throw new IllegalArgumentException("A binder already exists for this type: " + viewType);
         mBinders.put(viewType, binder);
     }
 
-    public GlossaryViewHolder createHolder(ViewGroup parent, @LayoutRes int viewType) {
+    public GlossaryViewHolder<? extends T> createHolder(ViewGroup parent, @LayoutRes int viewType) {
         return mBinders.get(viewType).create(parent);
     }
 
@@ -30,7 +30,7 @@ public class Glossary<T> {
         T item = listItems.get(position);
         int count = mBinders.size();
         for (int i = 0; i < count; i++) {
-            GlossaryBinder<T, ?> binder = mBinders.valueAt(i);
+            GlossaryBinder<? extends T> binder = mBinders.valueAt(i);
             if (binder.handlesViewType(item)) {
                 return binder.getViewType();
             }
