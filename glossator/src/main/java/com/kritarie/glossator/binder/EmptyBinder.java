@@ -30,8 +30,8 @@ public class EmptyBinder<T> extends GlossaryBinder<T> {
         }
 
         @Override
-        public void setContent(T content) {
-            // Do nothing
+        public <H extends T> void setContent(H content) {
+
         }
     }
 }

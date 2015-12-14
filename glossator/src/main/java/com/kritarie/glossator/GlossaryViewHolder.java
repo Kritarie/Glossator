@@ -12,5 +12,5 @@ public abstract class GlossaryViewHolder<T> extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public abstract void setContent(T content);
+    public abstract <H extends T> void setContent(H content);
 }
