@@ -3,6 +3,7 @@ package com.kritarie.glossator;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 
+import com.kritarie.glossator.binder.DefaultBinder;
 import com.kritarie.glossator.binder.EmptyBinder;
 import com.kritarie.glossator.binder.FactoryBinder;
 import com.kritarie.glossator.binder.HolderFactory;
@@ -15,7 +16,6 @@ import com.kritarie.glossator.listener.OnViewAttachedToWindowListener;
 import com.kritarie.glossator.listener.OnViewDetachedFromWindowListener;
 import com.kritarie.glossator.listener.OnViewRecycledListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,15 +45,16 @@ public class Glossator<T> {
         return new Glossator<>(items);
     }
 
-    /**
-     * Initialize a {@link Glossator>} with an empty {@link List>}.
-     * The generic type will need to be inferred.
-     *
-     * @return a new {@link Glossator>} instance
-     */
-    public static <T> Glossator<T> init() {
-        return new Glossator<>(new ArrayList<T>());
-    }
+    //TODO
+//    /**
+//     * Initialize a {@link Glossator>} with an empty {@link List>}.
+//     * The generic type will need to be inferred.
+//     *
+//     * @return a new {@link Glossator>} instance
+//     */
+//    public static <T> Glossator<T> init() {
+//        return new Glossator<>(new ArrayList<T>());
+//    }
 
     /* Mapping Functions */
 
@@ -99,6 +100,18 @@ public class Glossator<T> {
         return this;
     }
 
+    /**
+     * Register a mapping from the given viewType to an empty {@link GlossaryViewHolder}.
+     * This viewType will act as the default when a binder cannot be found for a given item.
+     *
+     * @param viewType to map
+     * @return this {@link Glossator} for chaining
+     */
+    public <H extends T> Glossator<T> map(@LayoutRes int viewType) {
+        mGlossary.setDefault(new DefaultBinder<H>(viewType));
+        return this;
+    }
+
     /* Optional Listeners */
 
     public Glossator<T> setListener(OnAttachedToRecyclerListener listener) {
@@ -131,7 +144,7 @@ public class Glossator<T> {
         return this;
     }
 
-    public GlossaryAdapter build() {
+    public GlossaryAdapter<T> build() {
         return new GlossaryAdapter<>(mGlossary, mListItems, mListeners);
     }
 }

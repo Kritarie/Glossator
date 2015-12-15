@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import com.kritarie.glossator.GlossaryViewHolder;
 
 /**
- * Created by Sean on 12/12/2015.
+ * Created by Sean on 12/14/2015.
  */
-public class EmptyBinder<T> extends GlossaryBinder<T> {
+public class DefaultBinder<T> extends GlossaryBinder<T> {
 
-    public EmptyBinder(@LayoutRes int viewType, Class<T> modelClass) {
-        super(viewType, modelClass);
+    public DefaultBinder(@LayoutRes int viewType) {
+        super(viewType, null);
     }
 
     @Override
@@ -21,5 +21,10 @@ public class EmptyBinder<T> extends GlossaryBinder<T> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(getViewType(), parent, false);
         return new EmptyHolder<>(itemView);
+    }
+
+    @Override
+    public boolean handlesViewType(Object item) {
+        return false;
     }
 }

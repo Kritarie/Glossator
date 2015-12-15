@@ -20,7 +20,7 @@ public abstract class GlossaryBinder<T> {
 
     public abstract GlossaryViewHolder<T> create(ViewGroup parent);
 
-    public final boolean handlesViewType(Object item) {
+    public boolean handlesViewType(Object item) {
         return mClass.isInstance(item);
     }
 

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.kritarie.glossator.GlossaryAdapter;
+import com.kritarie.glossator.GlossaryViewHolder;
 import com.kritarie.glossator.Glossator;
 
 import java.util.ArrayList;
@@ -22,8 +24,12 @@ public class MainActivity extends AppCompatActivity {
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Animal> items = new ArrayList<>(15);
+        List<Animal> items = new ArrayList<>(17);
         items.add(new Dog());
+        items.add(new Cat());
+        items.add(new Fox());
+        items.add(new Dog());
+        items.add(new Lizard());
         items.add(new Cat());
         items.add(new Fox());
         items.add(new Dog());
@@ -32,15 +38,14 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Dog());
         items.add(new Cat());
         items.add(new Fox());
-        items.add(new Dog());
-        items.add(new Cat());
-        items.add(new Fox());
+        items.add(new Horse());
         items.add(new Fox());
         items.add(new Fox());
         items.add(new Fox());
 
         RecyclerView.Adapter adapter =
                 Glossator.with(items)
+                        .map(R.layout.view_default)
                         .map(R.layout.view_cat, Cat.class, new CatHolderFactory())
                         .map(R.layout.view_dog, Dog.class, DogHolder.class)
                         .map(R.layout.view_fox, Fox.class)
