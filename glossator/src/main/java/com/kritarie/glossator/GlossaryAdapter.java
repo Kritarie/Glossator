@@ -55,6 +55,11 @@ public class GlossaryAdapter<T> extends RecyclerView.Adapter<GlossaryViewHolder>
     }
 
     @Override
+    public void onBindViewHolder(GlossaryViewHolder holder, int position, List<Object> payloads) {
+        holder.setContent(mListItems.get(position), payloads);
+    }
+
+    @Override
     public int getItemViewType(int position) {
         return mGlossary.getItemViewType(mListItems, position);
     }
