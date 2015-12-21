@@ -1,5 +1,6 @@
 package com.kritarie.glossator.binder;
 
+import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,12 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ReflectiveBinder<T> extends GlossaryBinder<T> {
 
+    private @LayoutRes int mLayoutRes;
     private Constructor<? extends GlossaryViewHolder<T>> mConstructor;
 
-    public ReflectiveBinder(int viewType, Class<T> modelClass, Class<? extends GlossaryViewHolder<T>> holderClass) {
-        super(viewType, modelClass);
+    public ReflectiveBinder(Class<T> modelClass, Class<? extends GlossaryViewHolder<T>> holderClass, @LayoutRes int layoutRes) {
+        super(modelClass);
+        mLayoutRes = layoutRes;
         try {
             mConstructor = holderClass.getConstructor(View.class);
         } catch (NoSuchMethodException e) {
@@ -28,7 +31,7 @@ public class ReflectiveBinder<T> extends GlossaryBinder<T> {
     @Override
     public GlossaryViewHolder<T> create(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(getViewType(), parent, false);
+        View itemView = inflater.inflate(mLayoutRes, parent, false);
         GlossaryViewHolder<T> holder;
         try {
             holder = mConstructor.newInstance(itemView);

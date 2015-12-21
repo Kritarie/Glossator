@@ -1,6 +1,5 @@
 package com.kritarie.glossator.binder;
 
-import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
 
 import com.kritarie.glossator.GlossaryViewHolder;
@@ -10,11 +9,9 @@ import com.kritarie.glossator.GlossaryViewHolder;
  */
 public abstract class GlossaryBinder<T> {
 
-    private @LayoutRes int mViewType;
     private Class<T> mClass;
 
-    public GlossaryBinder(@LayoutRes int viewType, Class<T> modelClass) {
-        mViewType = viewType;
+    public GlossaryBinder(Class<T> modelClass) {
         mClass = modelClass;
     }
 
@@ -23,9 +20,4 @@ public abstract class GlossaryBinder<T> {
     public boolean handlesViewType(Object item) {
         return mClass.isInstance(item);
     }
-
-    public @LayoutRes int getViewType() {
-        return mViewType;
-    }
-
 }

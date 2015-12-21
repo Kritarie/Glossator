@@ -12,14 +12,17 @@ import com.kritarie.glossator.GlossaryViewHolder;
  */
 public class EmptyBinder<T> extends GlossaryBinder<T> {
 
-    public EmptyBinder(@LayoutRes int viewType, Class<T> modelClass) {
-        super(viewType, modelClass);
+    private @LayoutRes int mLayoutRes;
+
+    public EmptyBinder(Class<T> modelClass, @LayoutRes int layoutRes) {
+        super(modelClass);
+        mLayoutRes = layoutRes;
     }
 
     @Override
     public GlossaryViewHolder<T> create(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(getViewType(), parent, false);
+        View itemView = inflater.inflate(mLayoutRes, parent, false);
         return new EmptyHolder<>(itemView);
     }
 }

@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.Adapter adapter =
                 Glossator.with(items)
                         .map(R.layout.view_default)
-                        .map(R.layout.view_cat, Cat.class, new CatHolderFactory())
-                        .map(R.layout.view_dog, Dog.class, DogHolder.class)
-                        .map(R.layout.view_fox, Fox.class)
+                        .map(Cat.class, new CatHolderFactory(R.layout.view_cat, new Object()))
+                        .map(Dog.class, DogHolder.class, R.layout.view_dog)
+                        .map(Fox.class, R.layout.view_fox)
                         .build();
 
         recycler.setAdapter(adapter);

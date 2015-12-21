@@ -16,6 +16,7 @@ import com.kritarie.glossator.listener.OnViewAttachedToWindowListener;
 import com.kritarie.glossator.listener.OnViewDetachedFromWindowListener;
 import com.kritarie.glossator.listener.OnViewRecycledListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,70 +46,114 @@ public class Glossator<T> {
         return new Glossator<>(items);
     }
 
-    //TODO
-//    /**
-//     * Initialize a {@link Glossator>} with an empty {@link List>}.
-//     * The generic type will need to be inferred.
-//     *
-//     * @return a new {@link Glossator>} instance
-//     */
-//    public static <T> Glossator<T> init() {
-//        return new Glossator<>(new ArrayList<T>());
-//    }
+    /**
+     * Initialize a {@link Glossator>} with an empty {@link List>}.
+     * The generic type will need to be inferred.
+     *
+     * @return a new {@link Glossator>} instance
+     */
+    public static <T> Glossator<T> init(Class<T> clazz) {
+        return new Glossator<>(new ArrayList<T>());
+    }
 
     /* Mapping Functions */
 
     /**
-     * Register a mapping from the given viewType to a {@link GlossaryViewHolder} class.
+     * Register a mapping from the given model to a {@link GlossaryViewHolder} class.
      * Internally uses reflection to determine the default constructor.
      *
-     * @param viewType to map
+     * @param modelClass The model class that this ViewHolder should bind
      * @param holderClass Class from which ViewHolders will be constructed
+     * @param layoutRes to map
      * @return this {@link Glossator} for chaining
      */
-    public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass, Class<? extends GlossaryViewHolder<H>> holderClass) {
-        mGlossary.addBinder(new ReflectiveBinder<>(viewType, modelClass, holderClass));
+    public <H extends T> Glossator<T> map(Class<H> modelClass, Class<? extends GlossaryViewHolder<H>> holderClass, @LayoutRes int layoutRes) {
+        mGlossary.addBinder(new ReflectiveBinder<>(modelClass, holderClass, layoutRes));
         return this;
     }
 
     /**
-     * Register a mapping from the given viewType to a {@link HolderFactory} implementation.
+     * Register a mapping from the given model to a {@link HolderFactory} implementation.
      * Use this method as opposed to the reflective map if you need micro performance gains
      * or a non-default {@link GlossaryViewHolder} constructor.
      *
-     * @param viewType to map
      * @param modelClass The model class that this ViewHolder should bind
-     * @param factory which creates a {@link GlossaryViewHolder} for the given viewType
+     * @param factory which creates a {@link GlossaryViewHolder} for this model
      * @return this {@link Glossator} for chaining
      */
-    public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass, HolderFactory<H> factory) {
-        mGlossary.addBinder(new FactoryBinder<>(viewType, modelClass, factory));
+    public <H extends T> Glossator<T> map(Class<H> modelClass, HolderFactory<H> factory) {
+        mGlossary.addBinder(new FactoryBinder<>(modelClass, factory));
         return this;
     }
 
     /**
-     * Register a mapping from the given viewType to an empty {@link GlossaryViewHolder}.
+     * Register a mapping from the given model to an empty {@link GlossaryViewHolder}.
      * This method should be used only in the case where no information needs to be bound
      * to the view from the list.
      *
-     * @param viewType to map
      * @param modelClass The model class that should receive this empty holder
+     * @param layoutRes to map
      * @return this {@link Glossator} for chaining
      */
-    public <H extends T> Glossator<T> map(@LayoutRes int viewType, Class<H> modelClass) {
-        mGlossary.addBinder(new EmptyBinder<>(viewType, modelClass));
+    public <H extends T> Glossator<T> map(Class<H> modelClass, @LayoutRes int layoutRes) {
+        mGlossary.addBinder(new EmptyBinder<>(modelClass, layoutRes));
         return this;
     }
 
     /**
-     * Register a mapping from the given viewType to an empty {@link GlossaryViewHolder}.
-     * This viewType will act as the default when a binder cannot be found for a given item.
+     * Register a default mapping to an empty {@link GlossaryViewHolder}.
+     * This binder will act as the default when a binder cannot be found for a given item.
      *
-     * @param viewType to map
+     * @param layoutRes to map
      * @return this {@link Glossator} for chaining
      */
-    public <H extends T> Glossator<T> map(@LayoutRes int viewType) {
-        mGlossary.setDefault(new DefaultBinder<H>(viewType));
+    public <H extends T> Glossator<T> map(@LayoutRes int layoutRes) {
+        mGlossary.setDefault(new DefaultBinder<H>(layoutRes));
+        return this;
+    }
+
+    /**
+     * Register a mapping from the given model to a {@link GlossaryViewHolder} class.
+     * Internally uses reflection to determine the default constructor.
+     *
+     * @param viewType override autoincrement
+     * @param modelClass The model class that this ViewHolder should bind
+     * @param holderClass Class from which ViewHolders will be constructed
+     * @param layoutRes to map
+     * @return this {@link Glossator} for chaining
+     */
+    public <H extends T> Glossator<T> map(int viewType, Class<H> modelClass, Class<? extends GlossaryViewHolder<H>> holderClass, @LayoutRes int layoutRes) {
+        mGlossary.addBinder(viewType, new ReflectiveBinder<>(modelClass, holderClass, layoutRes));
+        return this;
+    }
+
+    /**
+     * Register a mapping from the given model to a {@link HolderFactory} implementation.
+     * Use this method as opposed to the reflective map if you need micro performance gains
+     * or a non-default {@link GlossaryViewHolder} constructor.
+     *
+     * @param viewType override autoincrement
+     * @param modelClass The model class that this ViewHolder should bind
+     * @param factory which creates a {@link GlossaryViewHolder} for this model
+     * @return this {@link Glossator} for chaining
+     */
+    public <H extends T> Glossator<T> map(int viewType, Class<H> modelClass, HolderFactory<H> factory) {
+        mGlossary.addBinder(viewType, new FactoryBinder<>(modelClass, factory));
+        return this;
+    }
+
+    /**
+     * Register a mapping from the given model to an empty {@link GlossaryViewHolder}.
+     * This method should be used only in the case where no information needs to be bound
+     * to the view from the list.
+     *
+     * @param viewType override autoincrement
+     * @param modelClass The model class that should receive this empty holder
+     * @param layoutRes to map
+     * @return this {@link Glossator} for chaining
+     */
+    public <H extends T> Glossator<T> map(int viewType, Class<H> modelClass, @LayoutRes int layoutRes) {
+        mGlossary.addBinder(viewType, new EmptyBinder<>(modelClass, layoutRes));
         return this;
     }
 
