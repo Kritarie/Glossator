@@ -1,5 +1,6 @@
 package com.kritarie.glossator;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -16,7 +17,7 @@ public abstract class GlossaryViewHolder<T> extends RecyclerView.ViewHolder {
 
     public abstract <H extends T> void setContent(H content);
 
-    public <H extends T> void setContent(H content, List<Object> payloads) {
+    public <H extends T> void setContent(H content, @NonNull List<Object> payloads) {
         setContent(content);
     }
 }

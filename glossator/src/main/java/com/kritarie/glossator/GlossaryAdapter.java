@@ -45,27 +45,31 @@ public class GlossaryAdapter<T> extends RecyclerView.Adapter<GlossaryViewHolder>
     }
 
     @Override
-    public GlossaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public final GlossaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return mGlossary.createHolder(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(GlossaryViewHolder holder, int position) {
+    public final void onBindViewHolder(GlossaryViewHolder holder, int position) {
         holder.setContent(mListItems.get(position));
     }
 
     @Override
-    public void onBindViewHolder(GlossaryViewHolder holder, int position, List<Object> payloads) {
-        holder.setContent(mListItems.get(position), payloads);
+    public final void onBindViewHolder(GlossaryViewHolder holder, int position, List<Object> payloads) {
+        if (payloads != null && !payloads.isEmpty()) {
+            holder.setContent(mListItems.get(position), payloads);
+        } else {
+            holder.setContent(mListItems.get(position));
+        }
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public final int getItemViewType(int position) {
         return mGlossary.getItemViewType(mListItems, position);
     }
 
     @Override
-    public int getItemCount() {
+    public final int getItemCount() {
         return mListItems.size();
     }
 
