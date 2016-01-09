@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                         .map(Fox.class, R.layout.view_fox)
                         .build();
 
-        recycler.setAdapter(adapter);
+        RecyclerView.Adapter adapterFromSubclass =
+                Glossator.with(items)
+                        .map(R.layout.view_default)
+                        .map(Cat.class, new CatHolderFactory(R.layout.view_cat, new Object()))
+                        .map(Dog.class, DogHolder.class, R.layout.view_dog)
+                        .map(Fox.class, R.layout.view_fox)
+                        .build(new AnimalAdapter());
+
+        recycler.setAdapter(adapterFromSubclass);
     }
 }

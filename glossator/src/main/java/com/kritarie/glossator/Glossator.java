@@ -8,13 +8,6 @@ import com.kritarie.glossator.binder.EmptyBinder;
 import com.kritarie.glossator.binder.FactoryBinder;
 import com.kritarie.glossator.binder.HolderFactory;
 import com.kritarie.glossator.binder.ReflectiveBinder;
-import com.kritarie.glossator.listener.ListenerWrapper;
-import com.kritarie.glossator.listener.OnAttachedToRecyclerListener;
-import com.kritarie.glossator.listener.OnDetachedFromRecyclerListener;
-import com.kritarie.glossator.listener.OnFailedRecycleListener;
-import com.kritarie.glossator.listener.OnViewAttachedToWindowListener;
-import com.kritarie.glossator.listener.OnViewDetachedFromWindowListener;
-import com.kritarie.glossator.listener.OnViewRecycledListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +15,14 @@ import java.util.List;
 /**
  * Created by Sean on 12/8/2015.
  */
-public class Glossator<T> {
+public final class Glossator<T> {
 
     @NonNull private final Glossary<T> mGlossary;
     @NonNull private final List<T> mListItems;
-    @NonNull private final ListenerWrapper mListeners;
 
     private Glossator(@NonNull List<T> items) {
         mListItems = items;
         mGlossary = new Glossary<>();
-        mListeners = new ListenerWrapper();
     }
 
     /* Static initializers */
@@ -157,39 +148,20 @@ public class Glossator<T> {
         return this;
     }
 
-    /* Optional Listeners */
-
-    public Glossator<T> setListener(OnAttachedToRecyclerListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
-    public Glossator<T> setListener(OnDetachedFromRecyclerListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
-    public Glossator<T> setListener(OnFailedRecycleListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
-    public Glossator<T> setListener(OnViewAttachedToWindowListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
-    public Glossator<T> setListener(OnViewDetachedFromWindowListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
-    public Glossator<T> setListener(OnViewRecycledListener listener) {
-        mListeners.add(listener);
-        return this;
-    }
-
+    // Build from scratch
     public GlossaryAdapter<T> build() {
-        return new GlossaryAdapter<>(mGlossary, mListItems, mListeners);
+        return new GlossaryAdapter.Builder<T>()
+                .withGlossary(mGlossary)
+                .withItems(mListItems)
+                .build();
+    }
+
+    // Build from subclass
+    public GlossaryAdapter<T> build(@NonNull GlossaryAdapter<T> adapter) {
+        return new GlossaryAdapter.Builder<T>()
+                .withGlossary(mGlossary)
+                .withItems(mListItems)
+                .withAdapter(adapter)
+                .build();
     }
 }

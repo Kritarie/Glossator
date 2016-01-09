@@ -63,4 +63,22 @@ public class Glossary<T> {
         //If we couldn't find a binder for the item at this position and there is no default, throw
         throw new RuntimeException("No binder available for " + item + " at position " + position);
     }
+
+
+    // Lazy loader
+    private static final class Holder {
+        public static Glossary EMPTY = new EmptyGlossary();
+    }
+
+    @SuppressWarnings("unchecked") // EmptyGlossary is type agnostic
+    public static <T> Glossary<T> empty() {
+        return Holder.EMPTY;
+    }
+
+    private static final class EmptyGlossary extends Glossary {
+        @Override
+        public int getItemViewType(List listItems, int position) {
+            throw new RuntimeException("Glossary is empty. Assign a glossary to your adapter with Glossator.build(adapter subclass)");
+        }
+    }
 }
